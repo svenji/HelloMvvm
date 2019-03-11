@@ -1,6 +1,6 @@
 package com.sven.ui.main
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import com.sven.R
 import com.sven.databinding.MainBinding
 import com.sven.ui.BaseActivity
