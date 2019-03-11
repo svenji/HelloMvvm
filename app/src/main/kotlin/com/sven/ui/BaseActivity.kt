@@ -1,8 +1,8 @@
 package com.sven.ui
 
-import android.databinding.ViewDataBinding
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ViewDataBinding
 import com.sven.mvvm.viewmodel.ViewModel
 import javax.inject.Inject
 

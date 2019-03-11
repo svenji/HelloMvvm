@@ -1,6 +1,6 @@
 package com.sven.mvvm.viewmodel
 
-import android.databinding.BaseObservable
+import androidx.databinding.BaseObservable
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class ViewModel : BaseObservable() {
