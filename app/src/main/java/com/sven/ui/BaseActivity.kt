@@ -20,7 +20,7 @@ abstract class BaseActivity<T: ViewDataBinding, V: ViewModel>: AppCompatActivity
     abstract fun onInjectDependencies()
     abstract fun onBindView()
 
-    fun onInitViewModel(savedInstanceState: Bundle?) {}
+    open fun onInitViewModel(savedInstanceState: Bundle?) {}
 
     override fun onStart() {
         super.onStart()

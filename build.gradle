@@ -21,6 +21,12 @@ ext {
 
     // Library versions
     supportLibraryVersion = '1.0.0'
+    retrofitVersion = '2.9.0'
+    daggerVersion = '2.22.1'
+
+    // Java 8 Compatibility
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 
     // Build performance
     preDexLibraries = !project.hasProperty('disablePreDex')
