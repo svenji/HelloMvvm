@@ -68,6 +68,9 @@ android {
         implementation "androidx.legacy:legacy-support-v13:${rootProject.supportLibraryVersion}"
         implementation "androidx.constraintlayout:constraintlayout:2.0.1"
 
+        // Firebase Crash Reporting
+        implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+
         // Retrofit
         implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
         implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
