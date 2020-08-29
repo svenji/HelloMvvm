@@ -6,8 +6,8 @@ import androidx.databinding.ViewDataBinding
 import com.sven.mvvm.viewmodel.ViewModel
 import javax.inject.Inject
 
-abstract class BaseActivity<T: ViewDataBinding, V: ViewModel>: AppCompatActivity() {
-    lateinit var viewModel: V
+abstract class BaseActivity<T : ViewDataBinding, V : ViewModel> : AppCompatActivity() {
+    @Inject lateinit var viewModel: V
     lateinit var binding: T
 
     override fun onCreate(savedInstanceState: Bundle?) {

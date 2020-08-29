@@ -1,7 +1,6 @@
 package com.sven
 
 import android.util.Log
-import com.sven.dagger.components.BaseComponent
 import com.sven.dagger.components.DaggerBaseComponent
 import com.sven.dagger.modules.ApplicationModule
 import com.sven.managers.CrashReportingManager
