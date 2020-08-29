@@ -2,14 +2,20 @@ package com.sven.dagger.components
 
 import com.sven.BaseApplication
 import com.sven.dagger.modules.ApplicationModule
-import com.sven.ui.main.MainActivity
+import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [(ApplicationModule::class)])
-interface BaseComponent {
-    fun inject(application: BaseApplication)
-
-    fun inject(activity: MainActivity)
+@Component(modules = [
+    AndroidSupportInjectionModule::class,
+    ApplicationModule::class
+])
+interface BaseComponent : AndroidInjector<BaseApplication> {
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance application: BaseApplication, applicationModule: ApplicationModule): BaseComponent
+    }
 }

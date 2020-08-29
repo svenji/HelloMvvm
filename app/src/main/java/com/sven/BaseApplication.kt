@@ -1,21 +1,17 @@
 package com.sven
 
-import android.app.Application
 import android.util.Log
 import com.sven.dagger.components.BaseComponent
 import com.sven.dagger.components.DaggerBaseComponent
 import com.sven.dagger.modules.ApplicationModule
 import com.sven.managers.CrashReportingManager
-import com.sven.util.Injector
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import timber.log.Timber
 import javax.inject.Inject
 
-class BaseApplication : Application() {
-    // Dependency Injection
-    private var component: BaseComponent? = null
-
+class BaseApplication : DaggerApplication() {
     @Inject lateinit var crashReportingManager: CrashReportingManager
-
 
     override fun onCreate() {
         super.onCreate()
@@ -26,10 +22,10 @@ class BaseApplication : Application() {
         } else {
             Timber.plant(CrashReportingTree(crashReportingManager))
         }
+    }
 
-        // Dependency
-        component = DaggerBaseComponent.builder().applicationModule(ApplicationModule(this)).build()
-        component?.inject(this)
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerBaseComponent.factory().create(this, ApplicationModule(this))
     }
 
     /**
@@ -59,17 +55,5 @@ class BaseApplication : Application() {
                 }
             }
         }
-    }
-
-    override fun getSystemService(name: String): Any {
-        if (Injector.matchesService(name)) {
-            return component!!
-        } else {
-            return super.getSystemService(name)
-        }
-    }
-
-    companion object {
-        val INJECTOR_SERVICE = "com.whistle.bolt.InjectorService"
     }
 }

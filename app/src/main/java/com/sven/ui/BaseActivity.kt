@@ -7,17 +7,15 @@ import com.sven.mvvm.viewmodel.ViewModel
 import javax.inject.Inject
 
 abstract class BaseActivity<T: ViewDataBinding, V: ViewModel>: AppCompatActivity() {
-    @Inject lateinit var viewModel: V
+    lateinit var viewModel: V
     lateinit var binding: T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onInjectDependencies()
         onBindView()
         onInitViewModel(savedInstanceState)
     }
 
-    abstract fun onInjectDependencies()
     abstract fun onBindView()
 
     open fun onInitViewModel(savedInstanceState: Bundle?) {}
