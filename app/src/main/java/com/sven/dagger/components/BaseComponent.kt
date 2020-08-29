@@ -4,6 +4,7 @@ import com.sven.BaseApplication
 import com.sven.dagger.modules.ActivitiesModule
 import com.sven.dagger.modules.ApplicationModule
 import com.sven.dagger.modules.FragmentsModule
+import com.sven.dagger.modules.NetworkModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -15,7 +16,8 @@ import javax.inject.Singleton
     AndroidSupportInjectionModule::class,
     ApplicationModule::class,
     ActivitiesModule::class,
-    FragmentsModule::class
+    FragmentsModule::class,
+    NetworkModule::class
 ])
 interface BaseComponent : AndroidInjector<BaseApplication> {
     @Component.Factory
