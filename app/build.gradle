@@ -158,8 +158,9 @@ android {
         // Android support libraries
         implementation "androidx.appcompat:appcompat:1.2.0"
         implementation "androidx.annotation:annotation:${rootProject.supportLibraryVersion}"
-        implementation "androidx.legacy:legacy-support-v13:${rootProject.supportLibraryVersion}"
+        implementation "androidx.browser:browser:1.2.0"
         implementation "androidx.constraintlayout:constraintlayout:2.0.1"
+        implementation "androidx.legacy:legacy-support-v13:${rootProject.supportLibraryVersion}"
 
         // Firebase Crash Reporting
         implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
