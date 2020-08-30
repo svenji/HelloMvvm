@@ -2,6 +2,8 @@ package com.sven.util
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -87,4 +89,10 @@ fun Activity?.startEmailIntent(chooserTitle: String?, toEmailAddress: String, su
     } catch (ex: ActivityNotFoundException) {
         Toast.makeText(this, R.string.no_email_client_error, Toast.LENGTH_SHORT).show()
     }
+}
+
+fun Activity.copyTextToClipboard(label: String?, text: String?) {
+    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText(label, text)
+    clipboard.setPrimaryClip(clip)
 }

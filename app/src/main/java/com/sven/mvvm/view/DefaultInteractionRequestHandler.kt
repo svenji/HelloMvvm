@@ -4,12 +4,14 @@ import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.sven.R
+import com.sven.mvvm.interactions.CopyTextToClipboardInteractionRequest
 import com.sven.mvvm.interactions.DismissKeyboardInteractionRequest
 import com.sven.mvvm.interactions.LogInteractionRequest
 import com.sven.mvvm.interactions.OpenUrlInteractionRequest
 import com.sven.mvvm.interactions.SendEmailInteractionRequest
 import com.sven.mvvm.interactions.ShowToastInteractionRequest
 import com.sven.ui.BaseActivity
+import com.sven.util.copyTextToClipboard
 import com.sven.util.dismissKeyboard
 import com.sven.util.openUrl
 import com.sven.util.startEmailIntent
@@ -26,6 +28,7 @@ class DefaultInteractionRequestHandler(activity: BaseActivity<*, *>) : Interacti
             is OpenUrlInteractionRequest -> handleOpenUrlInteractionRequest(interactionRequest)
             is DismissKeyboardInteractionRequest -> handleDismissKeyboardInteractionRequest()
             is SendEmailInteractionRequest -> handleSendEmailInteractionRequest(interactionRequest)
+            is CopyTextToClipboardInteractionRequest -> handleCopyToClipboardInteractionRequest(interactionRequest)
             else -> Timber.d("Unhandled InteractionRequest: $interactionRequest")
 
         }
@@ -99,5 +102,9 @@ class DefaultInteractionRequestHandler(activity: BaseActivity<*, *>) : Interacti
         }
 
         activity.startEmailIntent(chooserTitle, toEmailAddress, emailSubject, emailBody)
+    }
+
+    private fun handleCopyToClipboardInteractionRequest(request: CopyTextToClipboardInteractionRequest) {
+        activity.get()?.copyTextToClipboard(request.label, request.text)
     }
 }
