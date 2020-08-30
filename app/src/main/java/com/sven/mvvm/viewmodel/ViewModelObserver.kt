@@ -3,7 +3,7 @@ package com.sven.mvvm.viewmodel
 import com.sven.mvvm.view.InteractionRequest
 
 /**
- * RequestConfirmationListener for observing a [ViewModel].
+ * RequestConfirmationListener for observing a [BaseViewModel].
  */
 interface ViewModelObserver {
     /**

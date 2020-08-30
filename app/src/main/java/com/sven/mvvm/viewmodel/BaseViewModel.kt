@@ -11,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
-abstract class ViewModel : BaseObservable(), LifecycleObserver {
+abstract class BaseViewModel : BaseObservable(), LifecycleObserver {
     protected val disposables = CompositeDisposable()
 
     private val interactionRequestRelay = PublishRelay.create<InteractionRequest>()
@@ -24,7 +24,7 @@ abstract class ViewModel : BaseObservable(), LifecycleObserver {
     abstract fun bind()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun unbind() {
+    open fun unbind() {
         disposables.clear()
     }
 
