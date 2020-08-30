@@ -4,7 +4,11 @@ import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.sven.R
-import com.sven.mvvm.interactions.*
+import com.sven.mvvm.interactions.DismissKeyboardInteractionRequest
+import com.sven.mvvm.interactions.LogInteractionRequest
+import com.sven.mvvm.interactions.OpenUrlInteractionRequest
+import com.sven.mvvm.interactions.SendEmailInteractionRequest
+import com.sven.mvvm.interactions.ShowToastInteractionRequest
 import com.sven.ui.BaseActivity
 import com.sven.util.dismissKeyboard
 import com.sven.util.openUrl
