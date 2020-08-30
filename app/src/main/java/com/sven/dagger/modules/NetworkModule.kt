@@ -2,6 +2,7 @@ package com.sven.dagger.modules
 
 import android.content.Context
 import com.google.gson.Gson
+import com.sven.BuildConfig
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -31,7 +32,7 @@ class NetworkModule {
     fun providesDefaultRetrofit(@Named("default_okhttp_client") okHttpClient: OkHttpClient,
                                 @Named("null_or_empty_converter_factory") nullOrEmptyConverterFactory: Converter.Factory,
                                 gson: Gson): Retrofit = Retrofit.Builder()
-//            .baseUrl(BuildConfig.API_BASE_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(nullOrEmptyConverterFactory)
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -84,7 +85,7 @@ class NetworkModule {
     @Named("http_logging_interceptor")
     fun providesHttpLoggingInterceptor(): Interceptor {
         val interceptor = HttpLoggingInterceptor()
-//        interceptor.level = if (BuildConfig.ENABLE_LOG_HTTP) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.BASIC
+        interceptor.level = if (BuildConfig.ENABLE_LOG_HTTP) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.BASIC
         return interceptor
     }
 }
