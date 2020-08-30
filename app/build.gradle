@@ -3,6 +3,34 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+ext {
+    versionNameBase = '0.1.0'
+
+    environments = [
+            production: [
+                    appName             : 'HelloMvvm',
+                    applicationId       : 'com.sven.hello',
+                    environment         : 'production',
+                    apiBaseUrl          : 'https://app.sven.com/api/',
+                    enableLogHttp       : false,
+                    manifestPlaceholders: [
+                            urlScheme: "sven",
+                    ]
+            ],
+
+            dev       : [
+                    appName             : 'HelloDevMvvm',
+                    applicationId       : 'com.sven.hello.dev',
+                    environment         : 'staging',
+                    apiBaseUrl          : 'https://app-staging.sven.com/api/',
+                    enableLogHttp       : true,
+                    manifestPlaceholders: [
+                            urlScheme: "sven-staging",
+                    ]
+            ]
+    ]
+}
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
 
@@ -16,21 +44,44 @@ android {
 
     defaultConfig {
         applicationId "com.sven"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        versionCode 1
-        versionName "1.0"
+        // versionName - see ext.versionNameBase (applied by common-ci.gradle)
+        // versionCode - see ext.versionNameBase (applied by common-ci.gradle)
+
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
 
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "environment"
+    productFlavors {
+        environments.each { name, config ->
+            "$name" {
+                dimension "environment"
+
+                applicationId = config.applicationId
+
+                resValue "string", "app_name", config.appName
+
+                buildConfigField "String", "API_BASE_URL", "\"${config.apiBaseUrl}\""
+
+                // enabled for all debug builds
+                buildConfigField "boolean", "ENABLE_LOG_HTTP", "${config.enableLogHttp} || DEBUG"
+
+                manifestPlaceholders << config.manifestPlaceholders
+                config.manifestPlaceholders.each {
+                    buildConfigField "String", "MANIFEST_PLACEHOLDER_${it.key.toUpperCase()}", "\"${it.value}\""
+                }
+            }
         }
     }
 

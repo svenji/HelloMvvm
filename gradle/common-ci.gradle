@@ -1,0 +1,88 @@
+static def isCircleCI() {
+    System.env.containsKey('CIRCLECI')
+}
+
+if (!ext.has("versionNameBase")) {
+    throw new GradleScriptException("You must set ext.versionNameBase = X.Y.Z when including common-ci.gradle", null)
+}
+
+if (plugins.hasPlugin('android') || plugins.hasPlugin('android-library')) {
+    android {
+        defaultConfig {
+            assert versionNameBase
+
+            versionName calculateVersionName(versionNameBase)
+            versionCode calculateVersionCode(versionNameBase)
+
+            buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber()}\""
+
+            // print calculated version info
+            println "\nVERSION INFO:"
+            println "versionNameBase: '$versionNameBase'"
+            println "versionName: '$versionName'"
+            println "versionCode: $versionCode"
+            println "buildNumber: ${buildNumber()}"
+            println "preDexLibraries: ${rootProject.preDexLibraries}"
+            println "isReleaseBuild: ${isReleaseBuild()}"
+            println "isCircleCI: ${isCircleCI()}\n"
+        }
+    }
+}
+
+def calculateVersionName(versionNameBase) {
+    assert versionNameBase
+    assert !versionNameBase.contains('-')
+
+    return versionNameBase + "." + buildNumber()
+}
+
+def calculateVersionCode(versionNameBase) {
+    assert versionNameBase
+    assert !versionNameBase.contains('-')
+
+    def buildNumber = buildNumber() % 10000
+
+    def versionParts = versionNameBase.trim().toUpperCase().tokenize('.')
+    assert versionParts.size() == 3 // fail fast if we typo
+
+    def (major, minor, patch) = versionParts
+    (major, minor, patch) = [major, minor, patch,].collect { it.toInteger() }
+    assert major <= 9
+    assert minor <= 9
+    assert patch <= 99
+    assert buildNumber <= 9999
+
+    def versionCode = (major * 10000000) + (minor * 1000000) + (patch * 10000) + buildNumber
+
+    return versionCode
+}
+
+def buildNumber() {
+    if (isReleaseBuild()) {
+        if (isCircleCI()) {
+            assert System.env.CIRCLE_BUILD_NUM
+            return System.env.CIRCLE_BUILD_NUM.toInteger()
+        } else {
+            throw new GradleScriptException("Release build not running via CI", null)
+        }
+    }
+
+    return 9999
+}
+
+def isReleaseBuild() {
+    def isReleaseBuild = false
+    gradle.startParameter.taskNames.each {
+        isReleaseBuild |= (it.endsWith('assemble') || it.endsWith('Release'))
+    }
+    return isReleaseBuild
+}
+
+android.applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+        def builtType = variant.buildType.name
+        def buildNumber = buildNumber()
+        def flavor = variant.flavorName
+        outputFileName = "app-${flavor}-${builtType}-${buildNumber}.apk"
+    }
+}
