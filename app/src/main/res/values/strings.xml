@@ -1,2 +1,5 @@
 <resources>
+    <string name="send_email_default_chooser_title">Send email…</string>
+    <string name="no_email_client_error">There is no email client installed.</string>
+
 </resources>
