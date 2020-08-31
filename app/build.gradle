@@ -1,7 +1,47 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
+    }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.firebase.crashlytics'
+
+ext {
+    versionNameBase = '0.1.0'
+
+    environments = [
+            production: [
+                    appName             : 'HelloMvvm',
+                    applicationId       : 'com.sven.hello',
+                    environment         : 'production',
+                    apiBaseUrl          : 'https://app.sven.com/api/',
+                    enableLogHttp       : false,
+                    manifestPlaceholders: [
+                            urlScheme: "sven",
+                    ]
+            ],
+
+            dev       : [
+                    appName             : 'HelloDevMvvm',
+                    applicationId       : 'com.sven.hello.dev',
+                    environment         : 'staging',
+                    apiBaseUrl          : 'https://app-staging.sven.com/api/',
+                    enableLogHttp       : true,
+                    manifestPlaceholders: [
+                            urlScheme: "sven-staging",
+                    ]
+            ]
+    ]
+}
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -16,26 +56,75 @@ android {
 
     defaultConfig {
         applicationId "com.sven"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        versionCode 1
-        versionName "1.0"
+        // versionName - see ext.versionNameBase (applied by common-ci.gradle)
+        // versionCode - see ext.versionNameBase (applied by common-ci.gradle)
+
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
 
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+        }
+
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // set these in the environment or ~/.gradle/gradle.properties
+            mockReleaseStoreParamsIfNecessary()
+            storeFile file(System.env.RELEASE_STORE_FILE ?: property("com.sven.app.releaseStoreFile"))
+            storePassword System.env.RELEASE_STORE_PASSWORD ?: property("com.sven.app.releaseStorePassword")
+            keyAlias System.env.RELEASE_KEY_ALIAS ?: property("com.sven.app.releaseKeyAlias")
+            keyPassword System.env.RELEASE_KEY_PASSWORD ?: property("com.sven.app.releaseKeyPassword")
         }
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    buildTypes {
+        debug {
+            minifyEnabled false
+            zipAlignEnabled true
+            matchingFallbacks = 'debug'
+
+            firebaseCrashlytics {
+                // If you don't need crash reporting for your debug build,
+                // you can speed up your build by disabling mapping file uploading.
+                mappingFileUploadEnabled false
+            }
+        }
+
+        release {
+            signingConfig signingConfigs.release
+
+            minifyEnabled true
+            zipAlignEnabled true
+            matchingFallbacks = 'release'
+        }
+    }
+
+    flavorDimensions "environment"
+    productFlavors {
+        environments.each { name, config ->
+            "$name" {
+                dimension "environment"
+
+                applicationId = config.applicationId
+
+                resValue "string", "app_name", config.appName
+
+                buildConfigField "String", "API_BASE_URL", "\"${config.apiBaseUrl}\""
+
+                // enabled for all debug builds
+                buildConfigField "boolean", "ENABLE_LOG_HTTP", "${config.enableLogHttp} || DEBUG"
+
+                manifestPlaceholders << config.manifestPlaceholders
+                config.manifestPlaceholders.each {
+                    buildConfigField "String", "MANIFEST_PLACEHOLDER_${it.key.toUpperCase()}", "\"${it.value}\""
+                }
+            }
+        }
     }
 
     dexOptions {
@@ -52,8 +141,14 @@ android {
         abortOnError false // TEMPORARY until we can fix all lint errors
     }
 
-    dataBinding {
-        enabled = true
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
 
     dependencies {
@@ -61,31 +156,97 @@ android {
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
         // Android support libraries
-        implementation "androidx.appcompat:appcompat:1.0.2"
+        implementation "androidx.appcompat:appcompat:1.2.0"
         implementation "androidx.annotation:annotation:${rootProject.supportLibraryVersion}"
+        implementation "androidx.browser:browser:1.2.0"
+        implementation "androidx.cardview:cardview:${rootProject.supportLibraryVersion}"
+        implementation "androidx.constraintlayout:constraintlayout:2.0.1"
         implementation "androidx.legacy:legacy-support-v13:${rootProject.supportLibraryVersion}"
-        implementation "androidx.constraintlayout:constraintlayout:1.1.3"
+        implementation "com.google.android.material:material:1.2.0"
+
+        // Firebase Crash Reporting
+        implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
 
         // Retrofit
-        implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-        implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-        implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+        implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+        implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+        implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
         implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
         // Reactive Extensions
-        implementation 'io.reactivex.rxjava2:rxjava:2.1.13'
-        implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+        implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+        implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
         implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 
         // Logging
         implementation 'com.jakewharton.timber:timber:4.5.1'
 
         // Dependency Injection
-        implementation 'com.google.dagger:dagger:2.21'
-        kapt 'com.google.dagger:dagger-compiler:2.21'
-        kapt 'javax.annotation:jsr250-api:1.0'
+        implementation 'com.google.guava:guava:27.0.1-android'
+        implementation "com.google.dagger:dagger:$daggerVersion"
+        implementation "com.google.dagger:dagger-android-support:${daggerVersion}"
+        kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+        kapt "com.google.dagger:dagger-android-processor:${daggerVersion}"
 
         // Databinding
         kapt 'com.android.databinding:compiler:3.1.4'
     }
 }
+
+// Require release key config to be set in ~/.gradle/gradle.properties, but only if running a release build
+
+/**
+ * We set the release keystore/key config in ~/.gradle/gradle.properties.  However, setting that up
+ * requires an extra step for getting development set up--a step that *shouldn't* be needed if you
+ * just want to run a debug build for development.
+ *
+ * However, because of the way signingConfigs parses / sets up the release config even during debug
+ * builds, the config can't be blank.
+ *
+ * So here, we just mock it out if we're not running a release build.  If we *are* running a release
+ * build but haven't set up the config in ~/.gradle/gradle.properties, we throw a much more helpful
+ * exception telling the dev the specific keys that are missing, as well as pointing them to
+ * README.md which has instructions for how to get set up.
+ */
+def mockReleaseStoreParamsIfNecessary() {
+    def isReleaseBuild = false
+    gradle.startParameter.taskNames.each {
+        isReleaseBuild |= (it.endsWith('assemble') || it.endsWith('Release'))
+    }
+
+    if (isReleaseBuild) {
+        def missingProperties = []
+        if (!System.env.RELEASE_STORE_FILE && !hasProperty('com.sven.app.releaseStoreFile')) {
+            missingProperties << 'com.sven.app.releaseStoreFile'
+        }
+        if (!System.env.RELEASE_STORE_PASSWORD && !hasProperty('com.sven.app.releaseStorePassword')) {
+            missingProperties << 'com.sven.app.releaseStorePassword'
+        }
+
+        if (!System.env.RELEASE_KEY_ALIAS && !hasProperty('com.sven.app.releaseKeyAlias')) {
+            missingProperties << 'com.sven.app.releaseKeyAlias'
+        }
+
+        if (!System.env.RELEASE_KEY_PASSWORD && !hasProperty('com.sven.app.releaseKeyPassword')) {
+            missingProperties << 'com.sven.app.releaseKeyPassword'
+        }
+
+        if (missingProperties) {
+            throw new GradleScriptException(
+                    """To make a release build, you must configure the release keystore in ~/.gradle/gradle.properties. 
+                    See README.md for instructions. Your ~/.gradle/gradle.properties is missing the following properties:${missingProperties.join('\n')}""", null)
+        }
+    } else {
+        // This is a debug build, but the script will fail to run if the release key config doesn't
+        // parse (i.e. if com.sven.app.releaseStoreFile == null or empty, or if the others
+        // are unset). So we mock them out here so the build can proceed.
+        project.ext["com.sven.app.releaseStoreFile"] = "[releaseStoreFile is unset!!]"
+
+        // dummy file, must not empty or null
+        project.ext["com.sven.app.releaseStorePassword"] = null
+        project.ext["com.sven.app.releaseKeyAlias"] = null
+        project.ext["com.sven.app.releaseKeyPassword"] = null
+    }
+}
+
+apply from: '../gradle/common-ci.gradle'

@@ -1,0 +1,13 @@
+package com.sven.dagger.modules
+
+import dagger.Module
+
+
+@Module
+abstract class FragmentsModule {
+    //////////////////////////////////////////////////
+    ////////////////////// Main //////////////////////
+    //////////////////////////////////////////////////
+//    @ContributesAndroidInjector
+//    abstract fun contributeMainActivity(): MainActivity
+}

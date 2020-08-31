@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Padding -->
+    <dimen name="padding_tiny">4dp</dimen>
+    <dimen name="padding_extra_small">8dp</dimen>
+    <dimen name="padding_small">16dp</dimen>
+    <dimen name="padding_medium">24dp</dimen>
+    <dimen name="padding_large">32dp</dimen>
+    <dimen name="padding_extra_large">48dp</dimen>
+    <dimen name="padding_extra_extra_large">64dp</dimen>
+    <dimen name="padding_huge">96dp</dimen>
+
+    <!-- Buttons -->
+    <dimen name="default_button_height">48dp</dimen>
+    <dimen name="default_button_with_shadow_height">56dp</dimen>
+    <dimen name="default_material_button_height">68dp</dimen>
+    <dimen name="default_button_spinner_size">24dp</dimen>
+    <dimen name="default_button_margin_bottom">16dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="header_1_text_size">36sp</dimen>
+    <dimen name="header_2_text_size">34sp</dimen>
+    <dimen name="header_3_text_size">22sp</dimen>
+    <dimen name="header_4_text_size">20sp</dimen>
+    <dimen name="header_5_text_size">18sp</dimen>
+    <dimen name="copy_large_text_size">18sp</dimen>
+    <dimen name="copy_text_size">16sp</dimen>
+    <dimen name="copy_small_text_size">14sp</dimen>
+    <dimen name="sub_text_text_size">15sp</dimen>
+    <dimen name="small_text_text_size">12sp</dimen>
+
+</resources>

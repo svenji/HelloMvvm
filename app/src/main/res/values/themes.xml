@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!-- Must be false -->
+        <item name="windowActionBar">false</item>
+
+        <!-- Colors -->
+        <item name="colorPrimary">@color/arctic_2</item>-->
+        <item name="colorPrimaryVariant">@color/arctic_0</item>
+        <item name="colorPrimaryDark">@color/arctic_0</item> <!-- updates status bar color-->
+        <item name="colorSecondary">@color/arctic_1</item>
+        <item name="colorSecondaryVariant">@color/arctic_0</item>
+        <item name="colorError">@color/rose_2</item>
+        <item name="android:statusBarColor">@color/arctic_0</item>
+
+        <!-- Text -->
+        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+
+        <!-- Buttons -->
+        <item name="materialButtonStyle">@style/DefaultMaterialButtonStyle</item>
+    </style>
+
+    <!-- Progress Spinner Themes -->
+    <style name="DefaultProgressSpinnerTheme" parent="Theme.AppCompat.DayNight">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="ArcticProgressSpinnerTheme" parent="Theme.AppCompat.DayNight">
+        <item name="colorAccent">@color/arctic_2</item>
+    </style>
+
+</resources>
