@@ -38,9 +38,6 @@
     <color name="gray_10">#323335</color>
     <color name="gunmetal">#545a5c</color>
     <color name="black">#111111</color>
-    <color name="whistle_green">#a1dc00</color>
-    <color name="whistle_green_dark">#8dc23f</color>
-    <color name="whistle_green_50_pct">#80a1dc00</color>
     <color name="black_40_pct">#66000000</color>
     <color name="black_5_pct">#0D000000</color>
     <color name="link">#66dbff</color>

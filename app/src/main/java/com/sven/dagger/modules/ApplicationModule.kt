@@ -23,7 +23,7 @@ class ApplicationModule(private val application: BaseApplication) {
 
     @Provides
     @Singleton
-    internal fun providesWhistleApplication(): BaseApplication {
+    internal fun providesBaseApplication(): BaseApplication {
         return this.application
     }
 

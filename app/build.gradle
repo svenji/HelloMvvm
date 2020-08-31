@@ -75,10 +75,10 @@ android {
         release {
             // set these in the environment or ~/.gradle/gradle.properties
             mockReleaseStoreParamsIfNecessary()
-            storeFile file(System.env.RELEASE_STORE_FILE ?: property("com.whistle.bolt.releaseStoreFile"))
-            storePassword System.env.RELEASE_STORE_PASSWORD ?: property("com.whistle.bolt.releaseStorePassword")
-            keyAlias System.env.RELEASE_KEY_ALIAS ?: property("com.whistle.bolt.releaseKeyAlias")
-            keyPassword System.env.RELEASE_KEY_PASSWORD ?: property("com.whistle.bolt.releaseKeyPassword")
+            storeFile file(System.env.RELEASE_STORE_FILE ?: property("com.sven.app.releaseStoreFile"))
+            storePassword System.env.RELEASE_STORE_PASSWORD ?: property("com.sven.app.releaseStorePassword")
+            keyAlias System.env.RELEASE_KEY_ALIAS ?: property("com.sven.app.releaseKeyAlias")
+            keyPassword System.env.RELEASE_KEY_PASSWORD ?: property("com.sven.app.releaseKeyPassword")
         }
     }
 
