@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text Styles -->
+    <style name="DefaultTextStyle">
+        <item name="android:gravity">start</item>
+    </style>
+
+    <!-- 36 sp -->
+    <style name="Header1" parent="DefaultTextStyle">
+        <item name="android:textSize">@dimen/header_1_text_size</item>
+    </style>
+
+    <!-- 34 sp -->
+    <style name="Header2" parent="DefaultTextStyle">
+        <item name="android:textSize">@dimen/header_2_text_size</item>
+    </style>
+
+    <!-- 22 sp -->
+    <style name="Header3" parent="DefaultTextStyle">
+        <item name="android:textSize">@dimen/header_3_text_size</item>
+    </style>
+
+    <style name="Header3.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 20 sp -->
+    <style name="Header4" parent="DefaultTextStyle">
+        <item name="android:textSize">@dimen/header_4_text_size</item>
+    </style>
+
+    <style name="Header4.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 18 sp -->
+    <style name="Header5" parent="DefaultTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/header_5_text_size</item>
+    </style>
+
+    <!-- 18 sp -->
+    <style name="CopyLarge" parent="DefaultTextStyle">
+        <item name="android:textSize">@dimen/copy_large_text_size</item>
+    </style>
+
+    <style name="CopyLarge.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 16 sp -->
+    <style name="Copy" parent="DefaultTextStyle">
+        <item name="android:textSize">@dimen/copy_text_size</item>
+    </style>
+
+    <style name="Copy.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 14 sp -->
+    <style name="CopySmall" parent="DefaultTextStyle">
+        <item name="android:textSize">@dimen/copy_small_text_size</item>
+    </style>
+
+    <style name="CopySmall.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CopySmall.SecondaryText">
+        <item name="android:textColor">@color/silver_6</item>
+    </style>
+
+    <!-- 15 sp -->
+    <style name="Subtext" parent="DefaultTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/sub_text_text_size</item>
+    </style>
+
+    <!-- 12 sp -->
+    <style name="SmallText" parent="DefaultTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/small_text_text_size</item>
+    </style>
+
+    <!-- Text Input -->
+    <style name="DefaultEditTextStyle" parent="DefaultTextStyle">
+        <item name="android:inputType">textCapSentences</item>
+        <item name="android:textSelectHandle">@drawable/empty_image</item>
+    </style>
+
+    <style name="Header1.EditTextStyle" parent="DefaultEditTextStyle">
+        <item name="android:textSize">@dimen/header_1_text_size</item>
+    </style>
+
+    <style name="Header3.EditTextStyle" parent="DefaultEditTextStyle">
+        <item name="android:textSize">@dimen/header_3_text_size</item>
+    </style>
+
+    <style name="DefaultEditTextStyle.HintTextAppearance">
+        <item name="android:textSize">@dimen/copy_small_text_size</item>
+    </style>
+
+    <style name="DefaultInputLayoutErrorTextAppearance" parent="Theme.Design.Light">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/rose_2</item>
+    </style>
+
+</resources>
